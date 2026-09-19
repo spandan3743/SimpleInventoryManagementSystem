@@ -20,4 +20,4 @@ A C# Windows Forms desktop application for small-business inventory management.
 - Windows
 
 ## Run
-Open `SimpleInventoryManagementSystem.sln` if created in Visual Studio, or open the `.csproj` file directly and press F5.
+Open `SimpleInventoryManagementSystem.sln` in Visual Studio, or open the `.csproj` file directly and press F5.

@@ -19,7 +19,20 @@ public class Form1 : Form
 
     public Form1()
     {
-        inventory = JsonStorage.Load();
+        try
+        {
+            inventory = JsonStorage.Load();
+        }
+        catch (StorageException ex)
+        {
+            inventory = new Inventory();
+            MessageBox.Show(
+                ex.Message + " The application will start with an empty inventory.",
+                "Load Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
         Text = "Simple Inventory Management System";
         Width = 1050;
         Height = 700;
@@ -156,9 +169,11 @@ public class Form1 : Form
             return;
         }
 
-        SaveAndRefresh();
-        ClearInputs();
-        lblStatus.Text = "Product added successfully.";
+        if (SaveAndRefresh())
+        {
+            ClearInputs();
+            lblStatus.Text = "Product added and saved successfully.";
+        }
     }
 
     private void UpdateProduct()
@@ -179,8 +194,8 @@ public class Form1 : Form
             updated.MinimumStockLevel);
         existing.UpdateStock(updated.Quantity);
 
-        SaveAndRefresh();
-        lblStatus.Text = "Product updated successfully.";
+        if (SaveAndRefresh())
+            lblStatus.Text = "Product updated and saved successfully.";
     }
 
     private void DeleteProduct()
@@ -193,9 +208,11 @@ public class Form1 : Form
 
         if (inventory.DeleteProduct(id))
         {
-            SaveAndRefresh();
-            ClearInputs();
-            lblStatus.Text = "Product deleted successfully.";
+            if (SaveAndRefresh())
+            {
+                ClearInputs();
+                lblStatus.Text = "Product deleted and saved successfully.";
+            }
         }
         else MessageBox.Show("Product not found.");
     }
@@ -217,9 +234,11 @@ public class Form1 : Form
         }
 
         product.UpdateStock(quantity);
-        SaveAndRefresh();
-        LoadProductIntoInputs(product);
-        lblStatus.Text = "Stock updated successfully.";
+        if (SaveAndRefresh())
+        {
+            LoadProductIntoInputs(product);
+            lblStatus.Text = "Stock updated and saved successfully.";
+        }
     }
 
     private void LoadSelectedProduct()
@@ -244,10 +263,25 @@ public class Form1 : Form
         txtPrice.Clear(); txtQuantity.Clear(); txtMinimum.Clear();
     }
 
-    private void SaveAndRefresh()
+    private bool SaveAndRefresh()
     {
-        JsonStorage.Save(inventory);
-        RefreshGrid(inventory.Products);
+        try
+        {
+            JsonStorage.Save(inventory);
+            RefreshGrid(inventory.Products);
+            return true;
+        }
+        catch (StorageException ex)
+        {
+            RefreshGrid(inventory.Products);
+            MessageBox.Show(
+                ex.Message + " Your change is still visible in this session, but it may be lost when the application closes.",
+                "Save Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            lblStatus.Text = "The change could not be saved to the JSON file.";
+            return false;
+        }
     }
 
     private void RefreshGrid(IEnumerable<Product> products)

@@ -30,7 +30,10 @@ public class Product : InventoryItem
         MinimumStockLevel = minimumStockLevel;
     }
 
+    [JsonIgnore]
     public decimal StockValue => CalculateStockValue();
+
+    [JsonIgnore]
     public bool IsLowStock => Quantity <= MinimumStockLevel;
 
     public override decimal CalculateStockValue() => Price * Quantity;

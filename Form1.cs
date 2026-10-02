@@ -104,7 +104,7 @@ public class Form1 : Form
 
     private bool TryReadProduct(out Product product)
     {
-        product = new Product();
+        product = null!;
 
         if (!int.TryParse(txtId.Text, out int id) || id <= 0)
         {
@@ -136,15 +136,13 @@ public class Form1 : Form
             return false;
         }
 
-        product = new Product
-        {
-            ProductId = id,
-            ProductName = txtName.Text.Trim(),
-            Category = txtCategory.Text.Trim(),
-            Price = price,
-            Quantity = quantity,
-            MinimumStockLevel = minimum
-        };
+        product = new Product(
+            id,
+            txtName.Text.Trim(),
+            txtCategory.Text.Trim(),
+            price,
+            quantity,
+            minimum);
         return true;
     }
 
@@ -174,11 +172,12 @@ public class Form1 : Form
             return;
         }
 
-        existing.ProductName = updated.ProductName;
-        existing.Category = updated.Category;
-        existing.Price = updated.Price;
-        existing.Quantity = updated.Quantity;
-        existing.MinimumStockLevel = updated.MinimumStockLevel;
+        existing.UpdateDetails(
+            updated.ProductName,
+            updated.Category,
+            updated.Price,
+            updated.MinimumStockLevel);
+        existing.UpdateStock(updated.Quantity);
 
         SaveAndRefresh();
         lblStatus.Text = "Product updated successfully.";
@@ -217,7 +216,7 @@ public class Form1 : Form
             return;
         }
 
-        product.Quantity = quantity;
+        product.UpdateStock(quantity);
         SaveAndRefresh();
         LoadProductIntoInputs(product);
         lblStatus.Text = "Stock updated successfully.";

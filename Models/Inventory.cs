@@ -1,27 +1,33 @@
 namespace SimpleInventoryManagementSystem.Models;
 
+/// <summary>
+/// Manages the collection of products and the main inventory operations.
+/// </summary>
 public class Inventory
 {
-    public List<Product> Products { get; private set; } = new();
+    private readonly List<Product> products = new();
+
+    // Exposes a read-only view so callers cannot replace or directly modify the collection.
+    public IReadOnlyList<Product> Products => products.AsReadOnly();
 
     public bool AddProduct(Product product)
     {
-        if (Products.Any(p => p.ProductId == product.ProductId))
+        if (FindById(product.ProductId) != null)
             return false;
 
-        Products.Add(product);
+        products.Add(product);
         return true;
     }
 
     public Product? FindById(int id) =>
-        Products.FirstOrDefault(p => p.ProductId == id);
+        products.FirstOrDefault(p => p.ProductId == id);
 
     public IEnumerable<Product> Search(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
-            return Products;
+            return products;
 
-        return Products.Where(p =>
+        return products.Where(p =>
             p.ProductId.ToString().Contains(text, StringComparison.OrdinalIgnoreCase) ||
             p.ProductName.Contains(text, StringComparison.OrdinalIgnoreCase));
     }
@@ -29,10 +35,17 @@ public class Inventory
     public bool DeleteProduct(int id)
     {
         var product = FindById(id);
-        if (product == null) return false;
-        Products.Remove(product);
+        if (product == null)
+            return false;
+
+        products.Remove(product);
         return true;
     }
 
-    public decimal TotalValue => Products.Sum(p => p.StockValue);
+    // The products are treated as InventoryItem objects here. Calling the overridden
+    // CalculateStockValue method demonstrates polymorphic behaviour.
+    public IEnumerable<InventoryItem> GetInventoryItems() => products;
+
+    public decimal TotalValue =>
+        GetInventoryItems().Sum(item => item.CalculateStockValue());
 }

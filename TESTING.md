@@ -1,8 +1,5 @@
 # Manual Testing Checklist
 
-Use this checklist in Visual Studio before the final Moodle submission and live presentation.
-The application should be built and run on Windows with .NET 8.
-
 | # | Scenario | Test data / action | Expected result |
 |---|---|---|---|
 | 1 | Add valid product | ID 101, Laptop Stand, Accessories, 39.95, Qty 10, Min 3 | Product is added, saved, displayed, and total value increases by $399.50. |

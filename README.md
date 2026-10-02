@@ -69,12 +69,13 @@ SimpleInventoryManagementSystem/
 
 ## How to run the application
 
-1. Clone or download this repository.
-2. Open `SimpleInventoryManagementSystem.slnx` in Visual Studio. If the `.slnx` format is not supported by the installed Visual Studio version, open `SimpleInventoryManagementSystem.csproj` directly.
-3. Allow Visual Studio to restore/build the project if requested.
-4. Press **F5** or select **Debug > Start Debugging**.
-5. Enter product information and use the buttons to add, update, delete, search or update stock.
-6. The application automatically saves the inventory to `inventory.json` in the program output folder whenever a change is successfully saved.
+Download or clone this repository.
+Open SimpleInventoryManagementSystem.slnx in Microsoft Visual Studio.
+If the .slnx file cannot be opened, open SimpleInventoryManagementSystem.csproj.
+Make sure the .NET desktop development workload is installed.
+Build the project using Build > Rebuild Solution.
+Press F5 or select Debug > Start Debugging.
+The Simple Inventory Management System window will open.
 
 ## Setup notes
 
@@ -108,4 +109,4 @@ https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json
 Microsoft. (2026). *Windows Forms overview*. Microsoft Learn.  
 https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/
 
-OpenAI ChatGPT was used as a supporting GenAI tool to help clarify OOP concepts, review code structure, suggest testing scenarios, and assist with drafting/refining project documentation. The final code, decisions, testing and submitted work should be reviewed and understood by the student before submission and presentation.
+ChataGpt was used only to support idea development, clarify concepts, and assist with debugging. The final project was reviewed and tested and it ensures my own work and reflects my understanding.

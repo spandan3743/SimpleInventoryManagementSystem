@@ -20,7 +20,7 @@
 
 ## Presentation test data
 
-For the live demonstration, keep the data simple:
+We can use the following data for the demonstration.
 
 - Product 101 - Laptop Stand - Accessories - $39.95 - Quantity 10 - Minimum 3
 - Product 102 - Wireless Mouse - Electronics - $25.00 - Quantity 2 - Minimum 5

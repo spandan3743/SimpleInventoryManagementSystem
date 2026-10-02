@@ -243,8 +243,21 @@ public class Form1 : Form
 
     private void LoadSelectedProduct()
     {
-        if (grid.CurrentRow?.DataBoundItem is Product product)
-            LoadProductIntoInputs(product);
+        if (grid.CurrentRow == null ||
+            !grid.Columns.Contains("ProductId") ||
+            grid.CurrentRow.Cells["ProductId"].Value == null)
+        {
+            return;
+        }
+
+        if (int.TryParse(
+                grid.CurrentRow.Cells["ProductId"].Value?.ToString(),
+                out int productId))
+        {
+            var product = inventory.FindById(productId);
+            if (product != null)
+                LoadProductIntoInputs(product);
+        }
     }
 
     private void LoadProductIntoInputs(Product product)
@@ -295,8 +308,8 @@ public class Form1 : Form
             Price = p.Price.ToString("C"),
             p.Quantity,
             p.MinimumStockLevel,
-            LowStock = p.IsLowStock ? "YES" : "No",
-            StockValue = p.StockValue.ToString("C")
+            StockStatus = p.GetStockStatus(),
+            StockValue = p.CalculateStockValue().ToString("C")
         }).ToList();
 
         lblTotal.Text = $"Total Inventory Value: {inventory.TotalValue:C}";
